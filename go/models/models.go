@@ -83,7 +83,7 @@ type MarriageDefaultsStats struct {
 // 按信用额度范围违约统计表
 type LimitDefaultsStats struct {
     gorm.Model
-    Range     string    `gorm:"uniqueIndex:idx_range_default" json:"range"`
+    Range     string    `gorm:"varchar(255) uniqueIndex:idx_range_default" json:"range"`
     Defaulted int       `gorm:"uniqueIndex:idx_range_default" json:"defaulted"`
     Count     int       `json:"count"`
 }
@@ -107,6 +107,6 @@ type ConsecutiveDefaults struct {
 type DefaultScoreSummary struct {
     gorm.Model
     ScoreName   string  `gorm:“unique" json:"scorename"`
-    ClientCount int     `json:"clientcount"
+    ClientCount int     `json:"clientcount"`
 }
 
