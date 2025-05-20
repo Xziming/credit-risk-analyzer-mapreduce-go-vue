@@ -52,7 +52,7 @@ type LimitBalInfo struct {
 type GenderDefaultsStats struct {
     gorm.Model
     Gender    int   `gorm:"uniqueIndex:idx_gender_default" json:"gender"`
-    Defaulted int   `gorm:"uniqueIndex:idx_age_default" json:"defaulted"`
+    Defaulted int   `gorm:"uniqueIndex:idx_gender_default" json:"defaulted"`
     Count     int   `json:"count"`
 }
 
@@ -83,7 +83,7 @@ type MarriageDefaultsStats struct {
 // 按信用额度范围违约统计表
 type LimitDefaultsStats struct {
     gorm.Model
-    Range     string    `gorm:"varchar(255) uniqueIndex:idx_range_default" json:"range"`
+    Range     string    `gorm:"type:varchar(255);uniqueIndex:idx_range_default" json:"range"`
     Defaulted int       `gorm:"uniqueIndex:idx_range_default" json:"defaulted"`
     Count     int       `json:"count"`
 }
@@ -92,21 +92,21 @@ type LimitDefaultsStats struct {
 type BillPayComparison struct {
     gorm.Model
     Month     int       `gorm:"unique" json:"month"`
-    TotalBill float64   `json:"totalnill"`
+    TotalBill float64   `json:"totalbill"`
     TotalPay  float64   `json:"totalpay"`
 }
 
 // 连续违约统计表
 type ConsecutiveDefaults struct {
     gorm.Model
-    ClientID        uint    `gorm:"unique json:"client_id"`
+    ClientID        uint    `gorm:"unique" json:"client_id"`
     MaxConsecutive  int     `json:"maxconsecutive"`
 }
 
 // 综合违约评分汇总
 type DefaultScoreSummary struct {
     gorm.Model
-    ScoreName   string  `gorm:“unique" json:"scorename"`
+    ScoreName   string  `gorm:"unique" json:"scorename"`
     ClientCount int     `json:"clientcount"`
 }
 
