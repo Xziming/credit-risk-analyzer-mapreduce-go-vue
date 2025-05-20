@@ -15,7 +15,7 @@ func main() {
 
 
     // 待插入数据
-    ageData := []models.GenderInfo{
+    data := []models.GenderInfo{
         {Gender: 1, Count: 11888},
         {Gender: 2, Count: 18112},
     }
