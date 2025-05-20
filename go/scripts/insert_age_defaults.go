@@ -14,8 +14,8 @@ func main() {
     )
 
 
-    // 待插入数据（你可以继续补全完整数据） 
-    ageDefaultsData := []models.AgeDefaultsStats{
+    // 待插入数据 
+    data := []models.AgeDefaultsStats{
         {Age: 21, Defaulted: 0, Count: 53},
         {Age: 21, Defaulted: 1, Count: 14},
         {Age: 22, Defaulted: 0, Count: 391},
@@ -129,7 +129,7 @@ func main() {
 
 
     // 插入数据
-    for _, item := range ageDefaultsData {
+    for _, item := range data {
         if err := db.DB.Create(&item).Error; err != nil {
             log.Printf("插入 Age %d, Defaulted %d 失败: %v\n", item.Age, item.Defaulted, err)
         } else {

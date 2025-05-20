@@ -9,10 +9,9 @@ import (
 func main() {
     // 初始化数据库
     db.Init()
-
-    // 待插入数据（你可以继续补全完整数据） 
-    // 自动迁移（确保表存在）
-    db.DB.AutoMigrate(&models.Marriage_defaults_stats{})
+    db.DB.AutoMigrate(
+        &models.MarriageDefaultsStats{},
+    )
 
     // 数据
     data := []models.MarriageDefaultsStats{
@@ -28,11 +27,11 @@ func main() {
 
 
     // 插入数据
-    for _, item := range ageDefaultsData {
+    for _, item := range data {
         if err := db.DB.Create(&item).Error; err != nil {
-            log.Printf("插入 Age %d, Defaulted %d 失败: %v\n", item.Age, item.Defaulted, err)
+            log.Printf("插入 Age %d, Defaulted %d, Count %d 失败: %v\n", item.Marriage, item.Defaulted, item.Count, err)
         } else {
-            log.Printf("插入 Age %d, Defaulted %d 成功\n", item.Age, item.Defaulted)
+            log.Printf("插入 Age %d, Defaulted %d, Count %d 成功\n", item.Marriage, item.Defaulted, item.Count)
         }
     }
 
