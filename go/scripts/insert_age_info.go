@@ -78,9 +78,9 @@ func main() {
     // 插入数据
     for _, item := range ageData {
         if err := db.DB.Create(&item).Error; err != nil {
-            log.Printf("插入 Age %d, Defaulted %d 失败: %v\n", item.Age, item.Defaulted, err)
+            log.Printf("插入 Age %d, Defaulted %d 失败: %v\n", item.Age, item.Count, err)
         } else {
-            log.Printf("插入 Age %d, Defaulted %d 成功\n", item.Age, item.Defaulted)
+            log.Printf("插入 Age %d, Defaulted %d 成功\n", item.Age, item.Count)
         }
     }
 
