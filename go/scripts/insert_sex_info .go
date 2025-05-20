@@ -16,17 +16,17 @@ func main() {
 
     // 待插入数据
     ageData := []models.GenderInfo{
-        {Sex: 1, Count: 11888},
-        {Sex: 2, Count: 18112},
+        {Gender: 1, Count: 11888},
+        {Gender: 2, Count: 18112},
     }
 
 
     // 插入数据
     for _, item := range data {
         if err := db.DB.Create(&item).Error; err != nil {
-            log.Printf("插入 Age %d, Defaulted %d 失败: %v\n", item.Age, item.Count, err)
+            log.Printf("插入 Age %d, Defaulted %d 失败: %v\n", item.Gender, item.Count, err)
         } else {
-            log.Printf("插入 Age %d, Defaulted %d 成功\n", item.Age, item.Count)
+            log.Printf("插入 Age %d, Defaulted %d 成功\n", item.Gender, item.Count)
         }
     }
 
