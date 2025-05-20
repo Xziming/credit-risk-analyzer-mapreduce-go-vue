@@ -15,7 +15,7 @@ func main() {
 
 
     // 待插入数据（你可以继续补全完整数据） 
-    ageDefaultsData := []models.AgeInfo{
+    ageData := []models.AgeInfo{
         {Age: 21, Count: 67},
         {Age: 22, Count: 560},
         {Age: 23, Count: 931},
