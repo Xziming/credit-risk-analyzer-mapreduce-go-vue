@@ -16,7 +16,7 @@ type ClientsInfo struct {
 // 性别分布表
 type GenderInfo struct {
     gorm.Model
-    Sex   int  `gorm:"unique" json:"gender"`
+    Gender   int  `gorm:"unique" json:"gender"`
     Count int   `json:"count"`
 }
 
