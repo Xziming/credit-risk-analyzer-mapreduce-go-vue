@@ -1,5 +1,5 @@
 <template>
-<div ref="chart" class="w-full h-96 flex justify-center items-center"></div>
+<div ref="chart" style="display:flex;justify-content:center;align-items:center;height:400px"></div>
 </template>
 
 <script setup>
@@ -10,15 +10,14 @@ const chart = ref(null)
 
     onMounted(async () => {
             // 1. 请求数据
-            const res = await fetch('http://zzh.hengtai119.cn/api/ageinfo')
+            const res = await fetch('http://zzh.hengtai119.cn/api/genderinfo')
             const data = await res.json()
 
 
             // 2. 提取 x 和 y
-            const margin = { top: 50, right: 50, bottom: 50, left: 50 }
-
-            const width = 600 - margin.left - margin.right
-            const height = 300 - margin.top - margin.bottom
+            const margin = { top: 20, right: 30, bottom: 30, left: 40 }
+            const width = 800 - margin.left - margin.right
+            const height = 400 - margin.top - margin.bottom
 
             const svg = d3.select(chart.value)
             .append('svg')
@@ -28,7 +27,7 @@ const chart = ref(null)
             .attr('transform', `translate(${margin.left},${margin.top})`)
 
             const x = d3.scaleLinear()
-            .domain(d3.extent(data, d => d.age))
+            .domain(d3.extent(data, d => d.gender))
             .range([0, width])
 
             const y = d3.scaleLinear()
@@ -94,9 +93,8 @@ const chart = ref(null)
 <style scoped>
 svg {
     font-family: sans-serif;
-display: block;
-         margin-left: auto;
-         margin-right: auto;
+dispaly: block;
+margin: 0 auto;
 }
 </style>
 
