@@ -1,81 +1,99 @@
 <template>
-  <div>
-    <h2>年龄分布柱状图</h2>
-    <div ref="chart"></div>
-  </div>
+<div ref="chart" class="w-full h-96"></div>
+
 </template>
 
-<script>
-import * as d3 from "d3";
-import axios from "axios";
+<script setup>
+import { ref, onMounted } from 'vue'
+import * as d3 from 'd3'
 
-export default {
-  name: "AgeChart",
-  mounted() {
-    this.fetchData();
-  },
-  methods: {
-    async fetchData() {
-      try {
-        const res = await axios.get("http://zzh.hengtai119.cn/api/ageinfo");
-        if (res.data.code === 200 && Array.isArray(res.data.data)) {
-          this.renderChart(res.data.data);
-        } else {
-          console.error("数据格式不正确：", res.data);
-        }
-      } catch (error) {
-        console.error("请求失败：", error);
-      }
-    },
-    renderChart(data) {
-      const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-      const width = 600 - margin.left - margin.right;
-      const height = 400 - margin.top - margin.bottom;
+const chart = ref(null)
 
-      const svg = d3.select(this.$refs.chart)
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
+    onMounted(async () => {
+            // 1. 请求数据
+            const res = await fetch('http://zzh.hengtai119.cn/api/ageinfo')
+            const data = await res.json()
 
-      // 处理数据
-      const x = d3.scaleBand()
-        .domain(data.map(d => d.Age.toString()))
-        .range([0, width])
-        .padding(0.1);
 
-      const y = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.Count)])
-        .nice()
-        .range([height, 0]);
+            // 2. 提取 x 和 y
+            const margin = { top: 20, right: 30, bottom: 30, left: 40 }
+            const width = 800 - margin.left - margin.right
+            const height = 400 - margin.top - margin.bottom
 
-      svg.append("g")
-        .selectAll("rect")
-        .data(data)
-        .enter().append("rect")
-        .attr("x", d => x(d.Age.toString()))
-        .attr("y", d => y(d.Count))
-        .attr("width", x.bandwidth())
-        .attr("height", d => height - y(d.Count))
-        .attr("fill", "#69b3a2");
+            const svg = d3.select(chart.value)
+            .append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            .append('g')
+            .attr('transform', `translate(${margin.left},${margin.top})`)
 
-      // 添加 X 轴
-      svg.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x));
+            const x = d3.scaleLinear()
+            .domain(d3.extent(data, d => d.age))
+            .range([0, width])
 
-      // 添加 Y 轴
-      svg.append("g")
-        .call(d3.axisLeft(y));
-    }
-  }
-};
+            const y = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.count)])
+            .range([height, 0])
+
+            // X 轴
+            svg.append('g')
+            .attr('transform', `translate(0,${height})`)
+            .call(d3.axisBottom(x).tickFormat(d3.format('d')))
+
+            // Y 轴
+            svg.append('g')
+            .call(d3.axisLeft(y))
+
+            // 折线图
+            const line = d3.line()
+            .x(d => x(d.age))
+            .y(d => y(d.count))
+
+            svg.append('path')
+            .datum(data)
+            .attr('fill', 'none')
+            .attr('stroke', 'steelblue')
+            .attr('stroke-width', 2)
+            .attr('d', line)
+
+            // 添加 tooltip div
+            const tooltip = d3.select(chart.value)
+            .append('div')
+            .style('position', 'absolute')
+            .style('background', 'rgba(0,0,0,0.7)')
+            .style('color', '#fff')
+            .style('padding', '5px 8px')
+            .style('border-radius', '4px')
+            .style('font-size', '12px')
+            .style('pointer-events', 'none')
+            .style('display', 'none')
+
+            // 加圆点并绑定事件
+            svg.selectAll('circle')
+            .data(data)
+            .enter()
+            .append('circle')
+            .attr('cx', d => x(d.age))
+            .attr('cy', d => y(d.count))
+            .attr('r', 4)
+            .attr('fill', 'orange')
+            .on('mouseover', (event, d) => {
+                    tooltip.style('display', 'block')
+                    .html(`年龄: <strong>${d.age}</strong><br>数量: <strong>${d.count}</strong>`)
+                    })
+            .on('mousemove', event => {
+                    tooltip.style('left', (event.pageX + 10) + 'px')
+                    .style('top', (event.pageY + 10) + 'px')
+                    })
+            .on('mouseout', () => {
+                    tooltip.style('display', 'none')
+                    })
+    })
 </script>
 
 <style scoped>
 svg {
-  font-family: sans-serif;
+    font-family: sans-serif;
 }
 </style>
 
