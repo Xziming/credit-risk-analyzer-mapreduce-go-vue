@@ -1,7 +1,6 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
-import AgeChart from './components/AgeChart.vue'
 </script>
 
 <template>
@@ -15,7 +14,6 @@ import AgeChart from './components/AgeChart.vue'
 
 <main>
 <TheWelcome />
-<AgeChart />
 </main>
 </template>
 
