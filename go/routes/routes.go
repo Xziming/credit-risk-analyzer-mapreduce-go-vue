@@ -13,6 +13,11 @@ func Setup(r *gin.Engine) {
     db := db.DB
     api := r.Group("/api")
     {
+        // 基本客户信息
+        api.GET("/clientsinfo", controllers.GetAll[models.ClientsInfo](db, models.ClientsInfo{}))
+
+    }
+    {
         // 性别分布
         api.GET("/genderinfo", controllers.GetAll[models.GenderInfo](db, models.GenderInfo{}))
         api.POST("/genderinfo", controllers.Create[models.GenderInfo](db, []string{"gender"}, []string{"count"}))

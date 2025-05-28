@@ -5,13 +5,38 @@ import "gorm.io/gorm"
 // 客户基本信息表
 type ClientsInfo struct {
     gorm.Model
-    LimitBal  float64
-    Sex       int
-    Age       int
-    Education int
-    Marriage  int
-    Defaulted int
+    ClientID  int     `gorm:"unique;column:client_id" json:"client_id"` // 显式主键
+
+    LimitBal  float64 `json:"limit_bal"`   // 信用额度
+    Sex       int     `json:"sex"`         // 性别（1=男，2=女）
+    Education int     `json:"education"`   // 教育程度
+    Marriage  int     `json:"marriage"`    // 婚姻状态
+    Age       int     `json:"age"`         // 年龄
+
+    Pay0 int `json:"pay_0"` // 还款状态
+    Pay2 int `json:"pay_2"`
+    Pay3 int `json:"pay_3"`
+    Pay4 int `json:"pay_4"`
+    Pay5 int `json:"pay_5"`
+    Pay6 int `json:"pay_6"`
+
+    BillAmt1 float64 `json:"bill_amt1"` // 账单金额
+    BillAmt2 float64 `json:"bill_amt2"`
+    BillAmt3 float64 `json:"bill_amt3"`
+    BillAmt4 float64 `json:"bill_amt4"`
+    BillAmt5 float64 `json:"bill_amt5"`
+    BillAmt6 float64 `json:"bill_amt6"`
+
+    PayAmt1 float64 `json:"pay_amt1"` // 还款金额
+    PayAmt2 float64 `json:"pay_amt2"`
+    PayAmt3 float64 `json:"pay_amt3"`
+    PayAmt4 float64 `json:"pay_amt4"`
+    PayAmt5 float64 `json:"pay_amt5"`
+    PayAmt6 float64 `json:"pay_amt6"`
+
+    Defaulted int `json:"defaulted"` // 是否违约（1=是，0=否）
 }
+
 
 // 性别分布表
 type GenderInfo struct {
