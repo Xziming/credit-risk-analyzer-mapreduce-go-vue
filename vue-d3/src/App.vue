@@ -1,18 +1,22 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import demo from './components/demo.vue'
+/*
+import AgeChart from './components/AgeChart.vue'
+import GenderChart from './components/GenderChart.vue'
+import MarriageBarChart from './components/MarriageBarChart.vue'
+import EducationBarChart from './components/EducationBarChart.vue'
+import LimitBalChart from './components/LimitBalChart.vue'
+import AgeDefaultsChart from './components/AgeDefaultsChart.vue'
+import GenderDefaultsChart from './components/GenderDefaultsChart.vue'
+import EducationDefaultsChart from './components/EducationDefaultsChart.vue'
+import MarriageDefaultsChart from './components/MarriageDefaultsChart.vue'
+import LimitBalDefaultsChart from './components/LimitBalDefaultsChart.vue'
+*/
+import Dashboard from './views/Dashboard.vue'
+
 </script>
 
 <template>
-<div>
-<a href="https://vite.dev" target="_blank">
-<img src="/vite.svg" class="logo" alt="Vite logo" />
-</a>
-<a href="https://vuejs.org/" target="_blank">
-<img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-</a>
-</div>
-<HelloWorld msg="Vite + Vue" />
+    <Dashboard />
 </template>
 
 <style scoped>
