@@ -20,6 +20,7 @@ func main() {
     // 初始化数据库，自动迁移 models 到数据库
     db.Init()
     db.DB.AutoMigrate(
+        &models.User{},
         &models.ClientsInfo{},
         &models.GenderInfo{},
         &models.AgeInfo{},

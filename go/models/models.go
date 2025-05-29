@@ -37,6 +37,11 @@ type ClientsInfo struct {
     Defaulted int `json:"defaulted"` // 是否违约（1=是，0=否）
 }
 
+type User struct {
+    gorm.Model
+    Username string `gorm:"unique; not null" json:username"`
+    Password string `gorm:"not null" json:"-"`
+}
 
 // 性别分布表
 type GenderInfo struct {
@@ -133,5 +138,18 @@ type DefaultScoreSummary struct {
     gorm.Model
     ScoreName   string  `gorm:"unique" json:"scorename"`
     ClientCount int     `json:"clientcount"`
+}
+
+type BillAndRepayment struct {
+    Month string    `gorm:"unique" json:"month"`
+    AverageBill float64 `json:"averageBill"`
+    AverageRepay   float64 `json:"averageRepay"`
+    OverdueAvgBill float64 `json:"overdueAvgBill"`
+    NormalRepayRate float64 `json:"normalRepayRate"`
+}
+
+type OverdueStreakInfo struct {
+    MaxOverdueStreak int    `json:"max_overdue_streak"`
+    CustomerCount    int    `json:"customer_count"`
 }
 

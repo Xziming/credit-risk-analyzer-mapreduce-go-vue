@@ -13,6 +13,11 @@ func Setup(r *gin.Engine) {
     db := db.DB
     api := r.Group("/api")
     {
+        // User
+        api.POST("/register", controllers.Register(db))
+        api.POST("/login", controllers.Login(db))
+    }
+    {
         // 基本客户信息
         api.GET("/clientsinfo", controllers.GetAll[models.ClientsInfo](db, models.ClientsInfo{}))
 
@@ -119,5 +124,9 @@ func Setup(r *gin.Engine) {
         api.POST("/defaultscoresummary", controllers.Create[models.DefaultScoreSummary](db, []string{"score_name"}, []string{"client_count"}))
         api.PUT("/defaultscoresummary/:id", controllers.Update[models.DefaultScoreSummary](db, models.DefaultScoreSummary{}))
         api.DELETE("/defaultscoresummary/:id", controllers.Delete[models.DefaultScoreSummary](db, models.DefaultScoreSummary{}))
+    }
+
+    {
+        api.GET("/billandrepayment", controllers.GetAll[models.BillAndRepayment](db, models.BillAndRepayment{}))
     }
 }
