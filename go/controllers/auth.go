@@ -1,9 +1,9 @@
 package controllers
 
 import (
+    "fmt"
     "net/http"
     "credit/models"
-    "credit/utils"
 
     "github.com/gin-gonic/gin"
     "golang.org/x/crypto/bcrypt"
@@ -12,26 +12,28 @@ import (
 
 func Register(db *gorm.DB) gin.HandlerFunc {
     return func(c *gin.Context) {
-        var user models.User
-        if err := c.ShouldBindJSON(&user); err != nil {
+        var input models.User
+        if err := c.ShouldBindJSON(&input); err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"error": "参数错误"})
             return
         }
 
         var exist models.User
-        if err := db.Where("username = ?", user.Username).First(&exist).Error; err == nil {
+        if err := db.Where("username = ?", input.Username).First(&exist).Error; err == nil {
             c.JSON(http.StatusConflict, gin.H{"error": "用户名已存在"})
             return
         }
 
-        hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+        hash, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
         if err != nil {
             c.JSON(http.StatusInternalServerError, gin.H{"error": "密码加密失败"})
             return
         }
-        user.Password = string(hash)
+        input.Password = string(hash)
+        fmt.Println("bcrypt hash =", string(hash))
 
-        if err := db.Create(&user).Error; err != nil {
+
+        if err := db.Create(&input).Error; err != nil {
             c.JSON(http.StatusInternalServerError, gin.H{"error": "注册失败"})
             return
         }
@@ -40,8 +42,13 @@ func Register(db *gorm.DB) gin.HandlerFunc {
 }
 
 func Login(db *gorm.DB) gin.HandlerFunc {
+
     return func(c *gin.Context) {
-        var input models.User
+        var input struct {
+            Username string `json:"username"`
+            Password string `json:"password"`
+        }
+
         if err := c.ShouldBindJSON(&input); err != nil {
             c.JSON(http.StatusBadRequest, gin.H{"error": "参数错误"})
             return
@@ -53,18 +60,16 @@ func Login(db *gorm.DB) gin.HandlerFunc {
             return
         }
 
+        fmt.Printf("Login input: %+v\n", input)
+        fmt.Printf("DB user: username=%s, password=%s\n", user.Username, user.Password)
+        fmt.Printf("%s\n",bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)))
         if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
             c.JSON(http.StatusUnauthorized, gin.H{"error": "密码错误"})
             return
         }
 
-        token, err := utils.GenerateToken(user.Username)
-        if err != nil {
-            c.JSON(http.StatusInternalServerError, gin.H{"error": "生成Token失败"})
-            return
-        }
-
-        c.JSON(http.StatusOK, gin.H{"token": token})
+        c.JSON(http.StatusOK, gin.H{"message": "登录成功"})
     }
 }
+
 
