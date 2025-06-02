@@ -280,6 +280,13 @@ icon: PieChartIcon,
       { name: "Limit Defaults Chart", path: "/limit-d-chart", pro: false },
       ],
        },
+       {
+icon: PieChartIcon,
+      name: "Deep Charts",
+      subItems: [
+      { name: "Radar Chart", path: "/radar-chart", pro: false },
+      ],
+       },
        // ... Add other menu items here
        ],
 },

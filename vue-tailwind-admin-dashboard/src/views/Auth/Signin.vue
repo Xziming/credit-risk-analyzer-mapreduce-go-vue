@@ -44,7 +44,7 @@ const router = useRouter()
 
     const handleLogin = async () => {
         try {
-            const res = await axios.post('/api/login', form.value)
+            const res = await axios.post('http://zzh.hengtai119.cn/api/login', form.value)
                 const { token, user } = res.data
 
                 localStorage.setItem('token', token)

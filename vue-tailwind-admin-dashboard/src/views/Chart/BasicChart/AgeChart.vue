@@ -1,12 +1,12 @@
 <template>
-  <AdminLayout>
+    <AdminLayout>
     <PageBreadcrumb :pageTitle="currentPageTitle" />
     <div class="space-y-5 sm:space-y-6">
-      <ComponentCard title="Age Chart">
+        <ComponentCard title="Age Chart">
         <LineChartOne />
-      </ComponentCard>
+        </ComponentCard>
     </div>
-  </AdminLayout>
+    </AdminLayout>
 </template>
 
 <script setup>

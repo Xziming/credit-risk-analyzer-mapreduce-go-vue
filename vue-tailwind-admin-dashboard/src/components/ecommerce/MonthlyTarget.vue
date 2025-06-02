@@ -1,206 +1,117 @@
 <template>
-  <div
-    class="rounded-2xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-white/[0.03]"
-  >
-    <div
-      class="px-5 pt-5 bg-white shadow-default rounded-2xl pb-11 dark:bg-gray-900 sm:px-6 sm:pt-6"
-    >
-      <div class="flex justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Monthly Target</h3>
-          <p class="mt-1 text-gray-500 text-theme-sm dark:text-gray-400">
-            Target you’ve set for each month
-          </p>
-        </div>
-        <div>
-          <DropdownMenu :menu-items="menuItems">
-            <template #icon>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </template>
-          </DropdownMenu>
-        </div>
-      </div>
-      <div class="relative max-h-[195px]">
-        <div id="chartTwo" class="h-full">
-          <div class="radial-bar-chart">
-            <VueApexCharts type="radialBar" height="330" :options="chartOptions" :series="series" />
-          </div>
-        </div>
-        <span
-          class="absolute left-1/2 top-[85%] -translate-x-1/2 -translate-y-[85%] rounded-full bg-success-50 px-3 py-1 text-xs font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500"
-          >+10%</span
-        >
-      </div>
-      <p class="mx-auto mt-1.5 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
-        You earn $3287 today, it's higher than last month. Keep up your good work!
-      </p>
-    </div>
-
-    <div class="flex items-center justify-center gap-5 px-6 py-3.5 sm:gap-8 sm:py-5">
-      <div>
-        <p class="mb-1 text-center text-gray-500 text-theme-xs dark:text-gray-400 sm:text-sm">
-          Target
-        </p>
-        <p
-          class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg"
-        >
-          $20K
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7.26816 13.6632C7.4056 13.8192 7.60686 13.9176 7.8311 13.9176C7.83148 13.9176 7.83187 13.9176 7.83226 13.9176C8.02445 13.9178 8.21671 13.8447 8.36339 13.6981L12.3635 9.70076C12.6565 9.40797 12.6567 8.9331 12.3639 8.6401C12.0711 8.34711 11.5962 8.34694 11.3032 8.63973L8.5811 11.36L8.5811 2.5C8.5811 2.08579 8.24531 1.75 7.8311 1.75C7.41688 1.75 7.0811 2.08579 7.0811 2.5L7.0811 11.3556L4.36354 8.63975C4.07055 8.34695 3.59568 8.3471 3.30288 8.64009C3.01008 8.93307 3.01023 9.40794 3.30321 9.70075L7.26816 13.6632Z"
-              fill="#D92D20"
-            />
-          </svg>
-        </p>
-      </div>
-
-      <div class="w-px bg-gray-200 h-7 dark:bg-gray-800"></div>
-
-      <div>
-        <p class="mb-1 text-center text-gray-500 text-theme-xs dark:text-gray-400 sm:text-sm">
-          Revenue
-        </p>
-        <p
-          class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg"
-        >
-          $20K
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7.60141 2.33683C7.73885 2.18084 7.9401 2.08243 8.16435 2.08243C8.16475 2.08243 8.16516 2.08243 8.16556 2.08243C8.35773 2.08219 8.54998 2.15535 8.69664 2.30191L12.6968 6.29924C12.9898 6.59203 12.9899 7.0669 12.6971 7.3599C12.4044 7.6529 11.9295 7.65306 11.6365 7.36027L8.91435 4.64004L8.91435 13.5C8.91435 13.9142 8.57856 14.25 8.16435 14.25C7.75013 14.25 7.41435 13.9142 7.41435 13.5L7.41435 4.64442L4.69679 7.36025C4.4038 7.65305 3.92893 7.6529 3.63613 7.35992C3.34333 7.06693 3.34348 6.59206 3.63646 6.29926L7.60141 2.33683Z"
-              fill="#039855"
-            />
-          </svg>
-        </p>
-      </div>
-
-      <div class="w-px bg-gray-200 h-7 dark:bg-gray-800"></div>
-
-      <div>
-        <p class="mb-1 text-center text-gray-500 text-theme-xs dark:text-gray-400 sm:text-sm">
-          Today
-        </p>
-        <p
-          class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg"
-        >
-          $20K
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7.60141 2.33683C7.73885 2.18084 7.9401 2.08243 8.16435 2.08243C8.16475 2.08243 8.16516 2.08243 8.16556 2.08243C8.35773 2.08219 8.54998 2.15535 8.69664 2.30191L12.6968 6.29924C12.9898 6.59203 12.9899 7.0669 12.6971 7.3599C12.4044 7.6529 11.9295 7.65306 11.6365 7.36027L8.91435 4.64004L8.91435 13.5C8.91435 13.9142 8.57856 14.25 8.16435 14.25C7.75013 14.25 7.41435 13.9142 7.41435 13.5L7.41435 4.64442L4.69679 7.36025C4.4038 7.65305 3.92893 7.6529 3.63613 7.35992C3.34333 7.06693 3.34348 6.59206 3.63646 6.29926L7.60141 2.33683Z"
-              fill="#039855"
-            />
-          </svg>
-        </p>
-      </div>
-    </div>
+  <div class="bg-white rounded-xl p-6 shadow-sm dark:bg-gray-900 relative">
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">风险等级占比</h2>
+    <div ref="svgRef" class="w-full h-[400px]" />
+    <div ref="tooltip" class="tooltip hidden absolute px-2 py-1 rounded bg-gray-800 text-white text-sm pointer-events-none"></div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import DropdownMenu from '../common/DropdownMenu.vue'
-const menuItems = [
-  { label: 'View More', onClick: () => console.log('View More clicked') },
-  { label: 'Delete', onClick: () => console.log('Delete clicked') },
+<script setup>
+import * as d3 from 'd3'
+import { onMounted, ref } from 'vue'
+
+const svgRef = ref(null)
+
+const data = [
+  { label: '无逾期', value: 19931, color: '#10B981' },
+  { label: '轻度逾期', value: 6772, color: '#F59E0B' },
+  { label: '高风险', value: 3297, color: '#EF4444' },
 ]
-import VueApexCharts from 'vue3-apexcharts'
 
-const props = defineProps({
-  value: {
-    type: Number,
-    default: 75.55,
-  },
+onMounted(() => {
+  const container = svgRef.value
+  const tooltip = container.parentElement.querySelector('.tooltip')
+  const width = container.offsetWidth
+  const height = 400
+  const radius = Math.min(width, height) / 2 - 20
+
+  const svg = d3.select(container)
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .append('g')
+    .attr('transform', `translate(${width / 2}, ${height / 2})`)
+
+  const pie = d3.pie()
+    .sort(null)
+    .value(d => d.value)
+
+  const arc = d3.arc()
+    .innerRadius(radius * 0.6)  // 设为60%半径，变成圆环
+    .outerRadius(radius)
+
+  const arcs = svg.selectAll('arc')
+    .data(pie(data))
+    .enter()
+    .append('g')
+
+  arcs.append('path')
+    .attr('d', arc)
+    .attr('fill', d => d.data.color)
+    .attr('stroke', 'white')
+    .attr('stroke-width', 2)
+    .on('mouseover', (event, d) => {
+      tooltip.classList.remove('hidden')
+      tooltip.textContent = `${d.data.label}: ${d.data.value} (${((d.data.value / d3.sum(data, d => d.value)) * 100).toFixed(1)}%)`
+    })
+    .on('mousemove', (event) => {
+      const [x, y] = d3.pointer(event, container)
+      const tooltipWidth = tooltip.offsetWidth
+      const tooltipHeight = tooltip.offsetHeight
+      let left = x + 10
+      let top = y + 10
+      if (left + tooltipWidth > width) {
+        left = x - tooltipWidth - 10
+      }
+      if (top + tooltipHeight > height) {
+        top = y - tooltipHeight - 10
+      }
+      tooltip.style.left = `${left}px`
+      tooltip.style.top = `${top}px`
+    })
+    .on('mouseout', () => {
+      tooltip.classList.add('hidden')
+    })
+
+  arcs.append('text')
+    .attr('transform', d => `translate(${arc.centroid(d)})`)
+    .attr('text-anchor', 'middle')
+    .attr('alignment-baseline', 'middle')
+    .attr('fill', 'white')
+    .attr('font-size', '12px')
+    .text(d => `${((d.data.value / d3.sum(data, d => d.value)) * 100).toFixed(1)}%`)
+
+  // 图例
+  const legend = svg.append('g')
+    .attr('transform', `translate(${-width / 2 + 20}, ${-height / 2 + 20})`)
+
+  data.forEach((d, i) => {
+    const g = legend.append('g').attr('transform', `translate(0, ${i * 20})`)
+    g.append('rect')
+      .attr('width', 12)
+      .attr('height', 12)
+      .attr('fill', d.color)
+    g.append('text')
+      .attr('x', 18)
+      .attr('y', 10)
+      .attr('font-size', '12px')
+      .attr('fill', '#4B5563')
+      .text(d.label)
+  })
 })
-
-const series = computed(() => [props.value])
-
-const chartOptions = {
-  colors: ['#465FFF'],
-  chart: {
-    fontFamily: 'Outfit, sans-serif',
-    sparkline: {
-      enabled: true,
-    },
-  },
-  plotOptions: {
-    radialBar: {
-      startAngle: -90,
-      endAngle: 90,
-      hollow: {
-        size: '80%',
-      },
-      track: {
-        background: '#E4E7EC',
-        strokeWidth: '100%',
-        margin: 5,
-      },
-      dataLabels: {
-        name: {
-          show: false,
-        },
-        value: {
-          fontSize: '36px',
-          fontWeight: '600',
-          offsetY: 60,
-          color: '#1D2939',
-          formatter: function (val: number) {
-            return val.toFixed(2) + '%'
-          },
-        },
-      },
-    },
-  },
-  fill: {
-    type: 'solid',
-    colors: ['#465FFF'],
-  },
-  stroke: {
-    lineCap: 'round',
-  },
-  labels: ['Progress'],
-}
 </script>
 
 <style scoped>
-.radial-bar-chart {
-  width: 100%;
-  max-width: 330px;
-  margin: 0 auto;
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+  opacity: 0.9;
+  z-index: 10;
+}
+svg {
+  max-width: 100%;
 }
 </style>
+

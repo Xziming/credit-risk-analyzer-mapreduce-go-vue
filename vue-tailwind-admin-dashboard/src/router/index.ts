@@ -107,6 +107,11 @@ name: 'Limit Bal Defaults Chart',
 component: () => import('../views/Chart/DefaultChart/LimitBalDefaultsChart.vue'),
 },
 {
+path: '/radar-chart',
+name: 'Radar Chart',
+component: () => import('../views/Chart/MoreChart/RadarChart.vue'),
+},
+{
 path: '/alerts',
 name: 'Alerts',
 component: () => import('../views/UiElements/Alerts.vue'),
