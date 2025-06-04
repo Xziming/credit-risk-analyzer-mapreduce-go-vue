@@ -29,6 +29,13 @@ class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
 </button>
 <p v-if="error" class="mt-4 text-center text-red-500">{{ error }}</p>
 </form>
+
+<div class="mb-6" text-center>
+<p class="mt-6 text-center text-gray-600">
+还没有账号？
+<button @click="goToRegister" class="text-blue-500 hover:underline"></button>
+</p>
+</div>
 </div>
 </div>
 </template>
@@ -55,5 +62,8 @@ const router = useRouter()
             error.value = err.response?.data?.message || '用户名或密码错误'
         }
     }
+const goToRegister = () => {
+    router.push('/signup')
+}
 </script>
 

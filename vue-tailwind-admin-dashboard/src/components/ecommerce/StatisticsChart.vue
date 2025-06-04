@@ -17,7 +17,13 @@
         </button>
       </div>
     </div>
-    <div ref="chartContainer" class="relative w-full h-[400px]" />
+    <div v-if="loading" class="w-full h-[400px] flex items-center justify-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+    </div>
+    <div v-else-if="error" class="w-full h-[400px] flex items-center justify-center text-red-500">
+      数据加载失败: {{ error }}
+    </div>
+    <div v-else ref="chartContainer" class="relative w-full h-[400px]" />
   </div>
 </template>
 
@@ -28,16 +34,9 @@ import { ref, onMounted, watch, nextTick } from 'vue'
 const chartContainer = ref(null)
 const chartType = ref('line')
 const scale = ref('linear')
-
-const data = [
-  { months: 0, customers: 19931 },
-  { months: 1, customers: 4842 },
-  { months: 2, customers: 1930 },
-  { months: 3, customers: 1013 },
-  { months: 4, customers: 657 },
-  { months: 5, customers: 286 },
-  { months: 6, customers: 1341 },
-]
+const loading = ref(true)
+const error = ref(null)
+const apiData = ref([])
 
 // 颜色函数
 const getColor = (months) => {
@@ -46,8 +45,33 @@ const getColor = (months) => {
   return '#EF4444' // red
 }
 
+const fetchData = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    const response = await fetch('http://zzh.hengtai119.cn/api/overdue')
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json()
+    // Transform data to match our expected format
+    apiData.value = data.map(item => ({
+      months: item.max_overdue_streak,
+      customers: item.customer_count
+    }))
+  } catch (err) {
+    error.value = err.message
+    console.error('Error fetching data:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
 const drawChart = () => {
+  if (loading.value || error.value || !apiData.value.length) return
+  
   const container = chartContainer.value
+  if (!container) return
   container.innerHTML = ''
 
   const margin = { top: 20, right: 30, bottom: 50, left: 50 }
@@ -64,13 +88,13 @@ const drawChart = () => {
     .attr('transform', `translate(${margin.left},${margin.top})`)
 
   const x = d3.scaleBand()
-    .domain(data.map(d => d.months))
+    .domain(apiData.value.map(d => d.months))
     .range([0, innerWidth])
     .padding(0.2)
 
   const y = scale.value === 'log'
-    ? d3.scaleLog().domain([1, d3.max(data, d => d.customers)]).range([innerHeight, 0])
-    : d3.scaleLinear().domain([0, d3.max(data, d => d.customers)]).range([innerHeight, 0])
+    ? d3.scaleLog().domain([1, d3.max(apiData.value, d => d.customers)]).range([innerHeight, 0])
+    : d3.scaleLinear().domain([0, d3.max(apiData.value, d => d.customers)]).range([innerHeight, 0])
 
   const xAxis = d3.axisBottom(x).tickFormat(d => `${d}月`)
   const yAxis = d3.axisLeft(y).ticks(5)
@@ -113,7 +137,7 @@ const drawChart = () => {
 
   if (chartType.value === 'bar') {
     svg.selectAll('rect.bar')
-      .data(data)
+      .data(apiData.value)
       .enter()
       .append('rect')
       .attr('class', 'bar')
@@ -129,14 +153,14 @@ const drawChart = () => {
       .curve(d3.curveMonotoneX)
 
     svg.append('path')
-      .datum(data)
+      .datum(apiData.value)
       .attr('fill', 'none')
       .attr('stroke', '#1E40AF')
       .attr('stroke-width', 3)
       .attr('d', line)
 
     svg.selectAll('circle')
-      .data(data)
+      .data(apiData.value)
       .enter()
       .append('circle')
       .attr('cx', d => x(d.months) + x.bandwidth() / 2)
@@ -152,10 +176,13 @@ const setScale = type => {
   scale.value = type
 }
 
-onMounted(drawChart)
-watch([chartType, scale], async () => {
+onMounted(async () => {
+  await fetchData()
+  drawChart()
+})
+
+watch([chartType, scale, apiData], async () => {
   await nextTick()
   drawChart()
 })
 </script>
-

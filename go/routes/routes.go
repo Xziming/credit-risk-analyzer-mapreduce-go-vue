@@ -128,5 +128,6 @@ func Setup(r *gin.Engine) {
 
     {
         api.GET("/billandrepayment", controllers.GetAll[models.BillAndRepayment](db, models.BillAndRepayment{}))
+        api.GET("/overdue", controllers.GetAll[models.OverdueStreakInfo](db, models.OverdueStreakInfo{}))
     }
 }

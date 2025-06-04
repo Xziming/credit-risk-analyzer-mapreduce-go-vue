@@ -3,6 +3,7 @@ package controllers
 import (
     "fmt"
     "net/http"
+    "credit/utils"
     "credit/models"
 
     "github.com/gin-gonic/gin"
@@ -30,7 +31,6 @@ func Register(db *gorm.DB) gin.HandlerFunc {
             return
         }
         input.Password = string(hash)
-        fmt.Println("bcrypt hash =", string(hash))
 
 
         if err := db.Create(&input).Error; err != nil {
@@ -60,15 +60,16 @@ func Login(db *gorm.DB) gin.HandlerFunc {
             return
         }
 
-        fmt.Printf("Login input: %+v\n", input)
-        fmt.Printf("DB user: username=%s, password=%s\n", user.Username, user.Password)
-        fmt.Printf("%s\n",bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)))
         if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
             c.JSON(http.StatusUnauthorized, gin.H{"error": "密码错误"})
             return
         }
-
-        c.JSON(http.StatusOK, gin.H{"message": "登录成功"})
+    token, err := utils.GenerateToken(user.Username)
+    if err != nil {
+        fmt.Printf("生成token失败: %v\n", err)
+        return
+    }
+    c.JSON(http.StatusOK, gin.H{"token": token})
     }
 }
 

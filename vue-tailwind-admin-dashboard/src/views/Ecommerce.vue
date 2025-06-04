@@ -36,9 +36,7 @@ components: {
                     AdminLayout,
                     EcommerceMetrics,
                     MonthlyTarget,
-                    CustomerDemographic,
                     StatisticsChart,
-                    RecentOrders,
             },
 name: 'Ecommerce',
 }

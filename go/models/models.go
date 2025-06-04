@@ -40,7 +40,7 @@ type ClientsInfo struct {
 type User struct {
     gorm.Model
     Username string `gorm:"unique; not null" json:"username"`
-    Password string `gorm:"not null" json:"-"`
+    Password string `gorm:"not null" json:"password"`
 }
 
 // 性别分布表
