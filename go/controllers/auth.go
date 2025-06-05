@@ -64,12 +64,12 @@ func Login(db *gorm.DB) gin.HandlerFunc {
             c.JSON(http.StatusUnauthorized, gin.H{"error": "密码错误"})
             return
         }
-    token, err := utils.GenerateToken(user.Username)
-    if err != nil {
-        fmt.Printf("生成token失败: %v\n", err)
-        return
-    }
-    c.JSON(http.StatusOK, gin.H{"token": token})
+        token, err := utils.GenerateToken(user.Username)
+        if err != nil {
+            fmt.Printf("生成token失败: %v\n", err)
+            return
+        }
+        c.JSON(http.StatusOK, gin.H{"token": token, "username": user.Username,})
     }
 }
 

@@ -7,8 +7,8 @@ return savedPosition || { left: 0, top: 0 }
 },
 routes: [
 {
-path: '/',
-name: 'Ecommerce',
+path: '/index',
+name: '',
 component: () => import('../views/Ecommerce.vue'),
 meta: {
 title: 'eCommerce Dashboard',
@@ -360,7 +360,7 @@ title: '404 Error',
 },
 
 {
-path: '/signin',
+path: '/',
 name: 'Signin',
 component: () => import('../views/Auth/Signin.vue'),
 meta: {

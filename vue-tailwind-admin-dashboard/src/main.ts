@@ -11,6 +11,11 @@ import App from './App.vue'
 import router from './router'
 import VueApexCharts from 'vue3-apexcharts'
 
+window.addEventListener('beforeunload', () => {
+localStorage.removeItem('token')
+localStorage.removeItem('userInfo')
+})
+
 const app = createApp(App)
 
 app.use(router)
