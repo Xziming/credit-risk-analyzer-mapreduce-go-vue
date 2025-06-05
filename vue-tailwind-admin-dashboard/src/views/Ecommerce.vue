@@ -24,20 +24,42 @@
 </template>
 
 <script>
+import { jwtDecode } from 'jwt-decode'
+import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
+
+
 import AdminLayout from '../components/layout/AdminLayout.vue'
 import EcommerceMetrics from '../components/ecommerce/EcommerceMetrics.vue'
 import MonthlyTarget from '../components/ecommerce/MonthlyTarget.vue'
-import CustomerDemographic from '../components/ecommerce/CustomerDemographic.vue'
 import StatisticsChart from '../components/ecommerce/StatisticsChart.vue'
-import RecentOrders from '../components/ecommerce/RecentOrders.vue'
 export default {
 components: {
                 AdminLayout,
-                    AdminLayout,
                     EcommerceMetrics,
                     MonthlyTarget,
                     StatisticsChart,
             },
 name: 'Ecommerce',
+      setup() {
+          const router = useRouter()
+
+              // 安全校验（防止 token 丢失时异常渲染）
+              const token = localStorage.getItem('token') || sessionStorage.getItem('token')
+              if (!token) {
+                  router.push('/')
+              } else {
+                  try {
+                      jwtDecode(token) // 可加 decode 验证
+                  } catch (err) {
+                      console.error('无效 token:', err)
+                          router.push('/')
+                  }
+              }
+      },
 }
+onMounted(() => {
+        console.log('当前 token:', localStorage.getItem('token') || sessionStorage.getItem('token'))
+        })
+
 </script>

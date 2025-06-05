@@ -8,7 +8,7 @@ return savedPosition || { left: 0, top: 0 }
 routes: [
 {
 path: '/index',
-name: '',
+name: 'Ecommerce',
 component: () => import('../views/Ecommerce.vue'),
 meta: {
 title: 'eCommerce Dashboard',
@@ -379,9 +379,22 @@ title: 'Signup',
 ],
 })
 
-export default router
 
 router.beforeEach((to, from, next) => {
+const publicPages = ['/', '/signup']
+const authRequired = !publicPages.includes(to.path)
+const token = localStorage.getItem('token') || sessionStorage.getItem('token')
+console.log('目标路径:', to.path)
+console.log('Token:', token)
+
+
+if (authRequired && !token) {
+return next('/')
+}
+
+
 document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`
 next()
 })
+
+export default router
